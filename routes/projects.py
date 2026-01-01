@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from services.projects import create_project
+from services.projects import create_project, get_all_projects
 
 projects_bp = Blueprint("projects", __name__)
 
@@ -11,4 +11,5 @@ def index():
             create_project(name)
         return redirect(url_for("projects.index"))
 
-    return render_template("index.html")
+    projects = get_all_projects()
+    return render_template("index.html", projects=projects)

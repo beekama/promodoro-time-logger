@@ -18,5 +18,22 @@
     <button type="submit">projektanlegen </button>
 </form>
 
+<hr>
+
+<h2> Bisherige Projekte </h2>
+
+{% if projects %}
+    <ul>
+        {% for projects in projects %}
+            <li>
+                {{ projects[1] }}
+                <small>( {{ projects[2] }})</small>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p> Keine projekte vorhanden. </p>
+{% endif %}
+
 </body>
 </html>
