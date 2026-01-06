@@ -6,8 +6,22 @@
 </head>
 <body>
 
-<h1>test</h1>
 
+{% if current_user %}
+    <p>
+        Eingeloggt als
+        <strong>{{ session.user.preferred_username }}</strong>
+        |
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+    </p>
+{% else %}
+    <p>
+        <a href="{{ url_for('auth.login') }}">Login</a>
+    </p>
+{% endif %}
+
+<hr>
+{% if current_user %}
 <form method="post">
     <input
         type="text"
@@ -15,24 +29,29 @@
         placeholder="Projektname"
         required
     />
-    <button type="submit">projektanlegen </button>
+    <button type="submit">projektanlegen</button>
 </form>
+{% else %}
+<p>Bitte einloggen, um Projekte anzulegen.</p>
+{% endif %}
+
 
 <hr>
 
 <h2> Bisherige Projekte </h2>
 
+
 {% if projects %}
     <ul>
-        {% for projects in projects %}
+        {% for project in projects %}
             <li>
-                {{ projects[1] }}
-                <small>( {{ projects[2] }})</small>
+                {{ project[1] }}
+                <small>({{ project[2] }})</small>
             </li>
         {% endfor %}
     </ul>
 {% else %}
-    <p> Keine projekte vorhanden. </p>
+    <p>Keine Projekte vorhanden.</p>
 {% endif %}
 
 </body>
