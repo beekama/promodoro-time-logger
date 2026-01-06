@@ -7,7 +7,7 @@
 <body>
 
 
-{% if current_user %}
+{% if session.user %}
     <p>
         Eingeloggt als
         <strong>{{ session.user.preferred_username }}</strong>
@@ -21,7 +21,7 @@
 {% endif %}
 
 <hr>
-{% if current_user %}
+{% if session.user%}
 <form method="post">
     <input
         type="text"

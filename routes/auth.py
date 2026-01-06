@@ -13,7 +13,8 @@ def login():
 def callback():
     token = oauth.keycloak.authorize_access_token()
     session["user"] = token["userinfo"]
-    return redirect("/")
+    session.modified = True
+    return redirect(url_for("projects.index"))
 
 @auth_bp.route("/logout")
 def logout():
