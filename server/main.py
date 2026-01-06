@@ -13,9 +13,11 @@ app.wsgi_app = ProxyFix(
 )
 
 def create_app():
+    
     app.config.from_prefixed_env()
-    # app.config["SECRET_KEY"] = os.environment["FLASK_SECRET_KEY"]
 
+
+    # Initialize Extensions
     init_keycloak(app)
 
     app.register_blueprint(projects_bp)

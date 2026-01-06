@@ -24,5 +24,5 @@ def logout():
     return redirect(
         f'{cfg["KEYCLOAK_SERVER_URL"]}/realms/{cfg["KEYCLOAK_REALM"]}/protocol/openid-connect/logout'
         f'?client_id={cfg["KEYCLOAK_CLIENT_ID"]}'
-        f'&post_logout_redirect_uri=https://plt.beekama.de/'
+        f'&post_logout_redirect_uri=https://ptl.beekama.de/'
     )
