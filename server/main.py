@@ -1,4 +1,5 @@
 from flask import Flask
+from datetime import datetime
 from routes.projects import projects_bp
 from routes.auth import auth_bp
 from auth.keycloak import init_keycloak
@@ -12,8 +13,15 @@ app.wsgi_app = ProxyFix(
     x_host=1
 )
 
-def create_app():
-    
+# Jinja template filter
+@app.template_filter("dt")
+def format_datetime(value):
+    if isinstance(value, str):
+        value = datetime.fromisoformat(value)
+    return value.strftime("%d.%m.%Y %H:%M")
+
+
+def create_app():    
     app.config.from_prefixed_env()
 
 

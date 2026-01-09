@@ -46,7 +46,7 @@
         {% for project in projects %}
             <li>
                 {{ project[1] }}
-                <small>({{ project[2] }})</small>
+                <small>({{ project[2] | dt }})</small>
             </li>
         {% endfor %}
     </ul>
