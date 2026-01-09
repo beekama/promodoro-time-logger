@@ -45,8 +45,8 @@
     <ul>
         {% for project in projects %}
             <li>
-                {{ project[1] }}
-                <small>({{ project[2] | dt }})</small>
+                {{ project.name }}
+                <small>({{ project.created_at | dt }})</small>
             </li>
         {% endfor %}
     </ul>

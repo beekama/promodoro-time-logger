@@ -29,5 +29,11 @@ def get_projects_for_user(owner_id: str):
     projects = cur.fetchall()
     cur.close()
     conn.close()
-    return projects
-
+    return [
+        {
+            "id": project[0],
+            "name": project[1],
+            "created_at": project[2],
+        }
+        for project in projects
+    ]
