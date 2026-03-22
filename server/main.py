@@ -32,3 +32,11 @@ def create_app():
     app.register_blueprint(auth_bp)
 
     return app
+
+@app.template_filter("duration")
+def format_duration(seconds):
+    seconds = int(seconds)
+    h = seconds // 3600
+    m = (seconds % 3600) // 60
+    s = seconds % 60
+    return f"{h:02d}:{m:02d}:{s:02d}"

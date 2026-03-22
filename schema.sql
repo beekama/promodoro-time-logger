@@ -31,8 +31,9 @@ CREATE TABLE IF NOT EXISTS project_time_logs (
     ended_at TIMESTAMPTZ
 );
 
-CREATE INDEX IF NOT EXISTS idx_time_logs_project_id
-    ON project_time_logs (project_id);
+CREATE UNIQUE INDEX IF NOT EXISTS one_open_timer_per_project_user
+    ON project_time_logs (project_id, owner_id)
+    WHERE ended_at IS NULL;
 
 CREATE INDEX IF NOT EXISTS idx_time_logs_owner_id
     ON project_time_logs (owner_id);

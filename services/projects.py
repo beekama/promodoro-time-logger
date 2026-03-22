@@ -119,3 +119,67 @@ def get_time_logs_for_project(project_id: str, owner_id: str):
         }
         for r in rows
     ]
+
+def delete_project(project_id: str, owner_id: str):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        DELETE FROM projects
+        WHERE id = %s AND owner_id = %s
+        """,
+        (project_id, owner_id)
+    )
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def get_running_projects(owner_id: str):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        SELECT project_id
+        FROM project_time_logs
+        WHERE owner_id = %s
+        AND ended_at IS NULL
+        """,
+        (owner_id,)
+    )
+
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    return {r[0] for r in rows}
+
+def get_total_time_per_project(owner_id: str):
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        SELECT
+            project_id,
+            COALESCE(
+                SUM(
+                    EXTRACT(EPOCH FROM (
+                        COALESCE(ended_at, now()) - started_at
+                    ))
+                ), 0
+            ) AS total_seconds
+        FROM project_time_logs
+        WHERE owner_id = %s
+        GROUP BY project_id
+        """,
+        (owner_id,)
+    )
+
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    return {r[0]: int(r[1]) for r in rows}

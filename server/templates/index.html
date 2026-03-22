@@ -139,7 +139,31 @@ a {
             {% for project in projects %}
                 <div class="project">
                     <strong>{{ project.name }}</strong><br>
-                    <small>{{ project.created_at | dt }}</small>
+                    <small>
+                        {{ project.created_at | dt }}<br>
+                        Zeit:
+                         <span
+                             class="timer"
+                             data-seconds="{{ totals.get(project.id, 0) }}"
+                             data-running="{{ project.id in running }}"
+                         >
+                             {{ totals.get(project.id, 0) | duration }}
+                         </span>
+                    </small><br><br>
+
+                    {% if project.id in running %}
+                        <form method="post" action="{{ url_for('projects.stop', project_id=project.id) }}">
+                            <button>⏹ Stop</button>
+                        </form>
+                    {% else %}
+                        <form method="post" action="{{ url_for('projects.start', project_id=project.id) }}">
+                            <button>▶ Start</button>
+                        </form>
+                    {% endif %}
+            
+                    <form method="post" action="{{ url_for('projects.delete', project_id=project.id) }}">
+                        <button style="background:#dc3545; margin-top:5px;">🗑 Delete</button>
+                    </form>
                 </div>
             {% endfor %}
         {% else %}
@@ -164,6 +188,25 @@ function toggleTheme() {
     const saved = localStorage.getItem("theme") || "light";
     setTheme(saved);
 })();
+
+function format(seconds) {
+    const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
+    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+    const s = String(seconds % 60).padStart(2, "0");
+    return `${h}:${m}:${s}`;
+}
+
+setInterval(() => {
+    document.querySelectorAll(".timer").forEach(el => {
+        if (el.dataset.running === "True") {
+            let sec = parseInt(el.dataset.seconds);
+            sec++;
+            el.dataset.seconds = sec;
+            el.textContent = format(sec);
+        }
+    });
+}, 1000);
+
 </script>
 
 </body>
