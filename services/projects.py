@@ -59,7 +59,7 @@ def start_time_log(project_id: str, owner_id: str):
     cur.execute(
         """
         INSERT INTO project_time_logs (project_id, owner_id)
-        VALUES ($s, $s)
+        VALUES (%s, %s)
         """,
         (project_id, owner_id)
     )
