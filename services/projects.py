@@ -96,7 +96,7 @@ def get_time_logs_for_project(project_id: str, owner_id: str):
 
     cur.execute(
         """
-        SELECT id, started_at, endet_at,
+        SELECT id, started_at, ended_at,
             EXTRACT(EPOCH FROM (ended_at - started_at)) AS duration_seconds
         FROM project_time_logs
         WHERE project_id = %s
@@ -114,7 +114,7 @@ def get_time_logs_for_project(project_id: str, owner_id: str):
         {
             "id": r[0],
             "started_at": r[1],
-            "endet_at": r[2],
+            "ended_at": r[2],
             "duration_seconds": r[3],
         }
         for r in rows
